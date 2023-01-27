@@ -8,10 +8,6 @@ template <typename T>
 class Stack {
 	vector<T> v;
 public:
-	Stack() {
-		vector<T> v;
-	}
-
 	void push(T data) {
 		v.push_back(data);
 	}
