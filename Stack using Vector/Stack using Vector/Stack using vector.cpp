@@ -8,4 +8,6 @@ int main() {
 	s.push(0);
 	s.push(1);
 
+	cout << s.top();
+
 }
