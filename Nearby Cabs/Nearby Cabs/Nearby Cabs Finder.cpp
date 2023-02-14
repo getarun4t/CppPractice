@@ -16,7 +16,7 @@ public:
 		this->b = b;
 	}
 
-	int distance() {
+	int distance() const {
 		return sqrt(a * a + b * b);
 	}
 };
@@ -63,7 +63,7 @@ void nearest_three_finder() {
 		cout << "Input the y axis: ";
 		cin >> b;
 		if (q.size() >= 3) {
-			if ((q.top().a * q.top().a) + (q.top().b * q.top().b) > (a * a + b * b)) {
+			if ((q.top().a * q.top().a) + q.top().distance() > (a * a + b * b)) {
 				q.pop();
 				q.push({ s, a, b });
 			}
