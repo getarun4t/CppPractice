@@ -7,10 +7,10 @@ pair<int, int> findSource(vector<vector<string>> field, int b, int l) {
 	int source = 0;
 	for (int i = 0; i < l; i++) {
 		for (int j = 0; j < b; j++) {
-			if (field[i][j] == "A") {
+			if (field[j][i] == "A") {
 				pair<int, int> loc;
-				loc.first = i;
-				loc.second = j;
+				loc.first = j;
+				loc.second = i;
 				return loc;
 			}
 		}
@@ -45,9 +45,28 @@ bool checkLength(vector<vector<string>> field, int b, int l, int x, int y) {
 
 bool pathHelper(vector<vector<string>> field, int b, int l, int init_a, int init_b) {
 	cout << "Current position is (" << init_a << " ," << init_b << ")" << endl;
+
 	if (init_a == l - 1 && init_b == b - 1) {
 		cout << "Reached destination : (" << init_a << " ," << init_b << ")" << endl;
 		return true;
+	}
+	if (init_b + 1 < b) {
+		if (field[init_a][init_b + 1] == "." &&
+			checkLength(field, b, l, init_a, init_b + 1)) {
+			field[init_a][init_b + 1] = "A";
+			if (pathHelper(field, b, l, init_a, init_b + 1)) {
+				return true;
+			};
+		}
+	}
+	if (init_a + 1 < l) {
+		if (field[init_a + 1][init_b] == "." &&
+			checkBreadth(field, b, l, init_a + 1, init_b)) {
+			field[init_a + 1][init_b] = "A";
+			if (pathHelper(field, b, l, init_a + 1, init_b)) {
+				return true;
+			};
+		}
 	}
 	if (init_a-1 >=0){
 		if (field[init_a - 1][init_b] == "." &&
@@ -67,24 +86,6 @@ bool pathHelper(vector<vector<string>> field, int b, int l, int init_a, int init
 			};
 		}
 	}
-	if (init_b + 1 < b) {
-		if (field[init_a][init_b + 1] == "." &&
-			checkLength(field, b, l, init_a, init_b + 1)) {
-			field[init_a][init_b + 1] = "A";
-			if (pathHelper(field, b, l, init_a, init_b + 1)) {
-				return true;
-			};
-		}
-	}
-	if (init_a + 1 < l){
-		if (field[init_a + 1][init_b] == "." &&
-			checkBreadth(field, b, l, init_a + 1, init_b)) {
-			field[init_a + 1][init_b] = "A";
-			if (pathHelper(field, b, l, init_a + 1, init_b)) {
-				return true;
-			};
-		}
-	}
 	if (field[init_a][init_b] == "A") {
 		cout << "Going back (" << init_a << " ," << init_b << ")" << endl;
 		return false;
@@ -99,15 +100,22 @@ bool pathCheck(vector<vector<string>> field) {
 	pair<int, int> Node = findSource(field, b, l);
 	int init_a = Node.first;
 	int init_b = Node.second;
+  
+	if (init_a == l - 1 && init_b == b - 1) {
+		cout << "Reached destination : (" << init_a << " ," << init_b << ")" << endl;
+		return true;
+	}
+  
 	return pathHelper(field, l, b, init_a, init_b);
 }
 
 int main() {
 	vector<vector<string>> field =
-	{	{"x", ".", "." ,".", "<"},
-		{".", ".", ".", ".", "x"},
-		{".", ">", "x", ".", "."},
-		{"A", ".", ".", "x", "."} };
+	{	{".", ".", "." ".", ">"},
+		{".", ".", "v", ".", "A"},
+		{".", "<", "x", ".", ">"},
+		{".", ".", "x", "x", "."} };
+
 
 	cout << pathCheck(field) << endl;
 }
