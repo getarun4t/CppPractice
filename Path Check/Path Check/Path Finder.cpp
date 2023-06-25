@@ -100,19 +100,22 @@ bool pathCheck(vector<vector<string>> field) {
 	pair<int, int> Node = findSource(field, b, l);
 	int init_a = Node.first;
 	int init_b = Node.second;
+  
 	if (init_a == l - 1 && init_b == b - 1) {
 		cout << "Reached destination : (" << init_a << " ," << init_b << ")" << endl;
 		return true;
 	}
+  
 	return pathHelper(field, l, b, init_a, init_b);
 }
 
 int main() {
 	vector<vector<string>> field =
-	{	{".", ".", "." ,"<", "."},
-		{".", ".", "v", "A", ">"},
+	{	{".", ".", "." ".", ">"},
+		{".", ".", "v", ".", "A"},
 		{".", "<", "x", ".", ">"},
 		{".", ".", "x", "x", "."} };
+
 
 	cout << pathCheck(field) << endl;
 }
