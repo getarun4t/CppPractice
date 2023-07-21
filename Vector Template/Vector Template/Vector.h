@@ -10,12 +10,24 @@ class Vector {
 	int maxSize;
 	T* arr;
 public:
-	Vector() {
-		currSize = 0;
-		maxSize = 1;
+  Vector(initializer_list<T> values) : currSize(values.size()), maxSize(values.size()+1) {
 		arr = new T[maxSize];
+		int index = 0;
+		for (auto value: values)
+			arr[index++] = value;
 	}
 
+	Vector() :Vector({}) {};
+
+	Vector(Vector& v)  {
+		this->currSize = v.currSize;
+		this->maxSize = v.maxSize;
+		this->arr = new T[maxSize];
+		int index = 0;
+		for (auto value : v.arr)
+			this->arr[index++] = value;
+	}
+  
 	void push_back(T val) {
 		if (currSize == maxSize) {
 			T* oldArray = arr;
