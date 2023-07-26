@@ -38,9 +38,16 @@ public:
 		cout << endl<<  "Copy Assignment Operator called" << endl;
 	}
 
+	Vector(Vector &&v): currSize(v.currSize), maxSize(v.maxSize) {
+		this->arr = new T[this->maxSize];
+		move(v.arr, v.arr + v.currSize, this->arr);
+		v.arr = nullptr;
+		v.currSize = 0;
+		v.maxSize = 0;
+		cout << endl << "Move constructor called" << endl;
+	}
+  
 	/*
-	Vector(initializer_list<T>&& values) : Vector(values) {};
-
 	Vector&& operator=(initializer_list<T> values) : Vector(values) {};
 	*/
 	void push_back(T val) {
