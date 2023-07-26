@@ -36,6 +36,7 @@ public:
 		this->arr = new T[maxSize];
 		copy(v.arr, v.arr + v.currSize, this->arr);
 		cout << endl<<  "Copy Assignment Operator called" << endl;
+		return *this;
 	}
 
 	Vector(Vector &&v): currSize(v.currSize), maxSize(v.maxSize) {
@@ -46,9 +47,23 @@ public:
 		v.maxSize = 0;
 		cout << endl << "Move constructor called" << endl;
 	}
-	/*
-	Vector&& operator=(initializer_list<T> values) : Vector(values) {};
-	*/
+	
+	Vector& operator=(Vector&& v) {
+		if (this == &v) {
+			return *this;
+		}
+		delete[] arr;
+		this->currSize = v.currSize;
+		this->maxSize = v.maxSize;
+		this->arr = new T[this->maxSize];
+		move(v.arr, v.arr + v.currSize, this->arr);
+		v.arr = nullptr;
+		v.currSize = 0;
+		v.maxSize = 0;
+		cout << endl << "Move assignment operator called" << endl;
+		return *this;
+	}
+
 	void push_back(T val) {
 		if (currSize == maxSize) {
 			T* oldArray = arr;
