@@ -46,6 +46,7 @@ public:
 		v.maxSize = 0;
 		cout << endl << "Move constructor called" << endl;
 	}
+  
 	/*
 	Vector&& operator=(initializer_list<T> values) : Vector(values) {};
 	*/

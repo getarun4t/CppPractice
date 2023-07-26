@@ -15,8 +15,6 @@ int main() {
 	t3.print_all();
 	t2.print_all();
 
-
-
 	Vector<int> v;
 	v.print_all();
 	v.push_back(5);
