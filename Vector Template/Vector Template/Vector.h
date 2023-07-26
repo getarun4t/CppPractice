@@ -1,6 +1,7 @@
 #pragma once
 
 #include<iostream>
+#include<algorithm>
 
 using namespace std;
 
@@ -10,7 +11,7 @@ class Vector {
 	int maxSize;
 	T* arr;
 public:
-  Vector(initializer_list<T> values) : currSize(values.size()), maxSize(values.size()+1) {
+	Vector(initializer_list<T> values) : currSize(values.size()), maxSize(values.size()+1) {
 		arr = new T[maxSize];
 		int index = 0;
 		for (auto value: values)
@@ -19,15 +20,19 @@ public:
 
 	Vector() :Vector({}) {};
 
-	Vector(Vector& v)  {
-		this->currSize = v.currSize;
-		this->maxSize = v.maxSize;
-		this->arr = new T[maxSize];
-		int index = 0;
-		for (auto value : v.arr)
-			this->arr[index++] = value;
+	Vector(const Vector& v)  : currSize(v.currSize), maxSize(v.maxSize) {
+		this->arr = new T[this->maxSize];
+		copy(v.arr, v.arr + v.currSize, this->arr);
+		cout << endl<<  "Copy Constructor called" << endl;
 	}
-  
+
+	/*
+	Vector& operator=(initializer_list<T> values) : Vector(values) {};
+
+	Vector(initializer_list<T>&& values) : Vector(values) {};
+
+	Vector&& operator=(initializer_list<T> values) : Vector(values) {};
+	*/
 	void push_back(T val) {
 		if (currSize == maxSize) {
 			T* oldArray = arr;

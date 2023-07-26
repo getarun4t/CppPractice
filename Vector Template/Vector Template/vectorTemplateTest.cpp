@@ -4,6 +4,10 @@ int main() {
 	Vector<int> t{ 1, 2, 3, 4, 5 };
 	t.print_all();
 
+
+	Vector<int> t1(t);
+	t1.print_all();
+
 	Vector<int> v;
 	v.print_all();
 	v.push_back(5);
