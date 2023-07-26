@@ -20,9 +20,7 @@ public:
 
 	Vector() :Vector({}) {};
 
-	Vector(const Vector& v)  : currSize(v.currSize), maxSize(v.maxSize) {
-		this->arr = new T[this->maxSize];
-		copy(v.arr, v.arr + v.currSize, this->arr);
+	Vector(const Vector& v)  : currSize(v.currSize), maxSize(v.maxSize), arr(v.arr) {
 		cout << endl<<  "Copy Constructor called" << endl;
 	}
 
