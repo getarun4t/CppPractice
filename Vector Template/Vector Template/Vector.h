@@ -26,9 +26,19 @@ public:
 		cout << endl<<  "Copy Constructor called" << endl;
 	}
 
-	/*
-	Vector& operator=(initializer_list<T> values) : Vector(values) {};
+	Vector& operator=(const Vector& v) {
+		if (this == &v) {
+			return *this;
+		}
+		delete[] arr;
+		this->currSize = v.currSize;
+		this->maxSize = v.maxSize;
+		this->arr = new T[maxSize];
+		copy(v.arr, v.arr + v.currSize, this->arr);
+		cout << endl<<  "Copy Assignment Operator called" << endl;
+	}
 
+	/*
 	Vector(initializer_list<T>&& values) : Vector(values) {};
 
 	Vector&& operator=(initializer_list<T> values) : Vector(values) {};

@@ -7,6 +7,10 @@ int main() {
 	Vector<int> t1(t);
 	t1.print_all();
 
+	Vector<int> t2;
+	t2 = t1;
+	t2.print_all();
+
 	Vector<int> v;
 	v.print_all();
 	v.push_back(5);
