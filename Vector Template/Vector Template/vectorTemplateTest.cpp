@@ -15,6 +15,11 @@ int main() {
 	t3.print_all();
 	t2.print_all();
 
+	Vector<int> t4;
+	t4 = move(t1);
+	t4.print_all();
+	t1.print_all();
+
 	Vector<int> v;
 	v.print_all();
 	v.push_back(5);
