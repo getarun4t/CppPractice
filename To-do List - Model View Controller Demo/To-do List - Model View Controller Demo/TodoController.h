@@ -2,21 +2,28 @@
 #define TODOCONTROLLER_h
 
 #include <iostream>
+#include <vector>
 #include <string>
 
 using namespace std;
 
 class TodoList {
-	string task;
-	int time;
+	vector<pair<string, string>> list;
+public: 
+	void AddtoList(pair<string, string>* p) {
+		list.push_back(*p);
+	}
 };
 
 class TodoController {
-	int size_m;
-	TodoList* t[size_m];
+	TodoList* list;
 public:
-	TodoController() : size_m(1) {};
-
+	void addNewItem(string s, string t) {
+		pair<string, string>* p;
+		p->first = s;
+		p->second = t;
+		list->AddtoList(p);
+	}
 }
 
 #endif TODOCONTROLLER_h
