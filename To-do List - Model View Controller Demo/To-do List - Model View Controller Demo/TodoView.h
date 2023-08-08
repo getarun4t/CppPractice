@@ -27,10 +27,6 @@ public:
 	void 
 }
 
-
-
-
-
 #endif TODOVIEW_h
 
 
