@@ -2,21 +2,22 @@
 #define TODOCONTROLLER_h
 
 #include <iostream>
+#include <vector>
 #include <string>
+#include "TodoView.h"
+#include "TodoModel.h"
 
 using namespace std;
 
-class TodoList {
-	string task;
-	int time;
-};
-
 class TodoController {
-	int size_m;
-	TodoList* t[size_m];
+	TodoView view;
+	TodoModel model;
 public:
-	TodoController() : size_m(1) {};
+	void run(){
+		do {
 
+		}
+	}
 }
 
 #endif TODOCONTROLLER_h
