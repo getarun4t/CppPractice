@@ -6,31 +6,17 @@
 
 using namespace std;
 
-class TodoList {
-	vector<pair<string, string>> list;
-public:
-	void AddtoList(pair<string, string>* p) {
-		list.push_back(*p);
-	}
-};
-
 class TodoView {
-	TodoList* list;
 public:
-	void addNewItem(string s, string t) {
-		pair<string, string>* p;
-		p->first = s;
-		p->second = t;
-		list->AddtoList(p);
-	}
-
-	void 
+	void printlist(TodoList* list){
+		cout << "List contents are below: " << endl;
+		for (int i = 0; i < list->size(); i++) {
+			cout << "Item " << i << ": " << list->getTask(i);
+			cout << "with deadline: " << list->getDeadline(i) << endl;
+		}
+		cout << "***************************" << endl << endl;
+	} 
 }
-
-
-
-
-
 #endif TODOVIEW_h
 
 
