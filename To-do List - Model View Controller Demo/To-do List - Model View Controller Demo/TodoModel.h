@@ -12,6 +12,18 @@ public:
 	void AddtoList(pair<string, string>* p) {
 		list.push_back(*p);
 	}
+
+	int size() {
+		return list.size();
+	}
+
+	string getTask(int index) {
+		return list[index].first;
+	}
+
+	string getDeadline(int index) {
+		return list[index].first;
+	}
 };
 
 class TodoModel {
@@ -23,8 +35,6 @@ public:
 		p->second = t;
 		list->AddtoList(p);
 	}
-
-	void
 }
 #endif TODOMODEL_h
 
