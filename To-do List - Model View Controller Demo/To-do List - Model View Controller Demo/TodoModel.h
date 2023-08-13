@@ -35,8 +35,6 @@ public:
 		p->second = t;
 		list->AddtoList(p);
 	}
-
-	void
 }
 #endif TODOMODEL_h
 
