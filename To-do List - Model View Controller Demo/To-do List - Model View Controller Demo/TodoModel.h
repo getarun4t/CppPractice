@@ -7,35 +7,49 @@
 using namespace std;
 
 class TodoList {
-	vector<pair<string, string>> list;
+	vector<pair<string, string>> items;
 public:
-	void AddtoList(pair<string, string>* p) {
-		list.push_back(*p);
+	void AddtoList(pair<string, string> *p) {
+		items.push_back(*p);
 	}
 
 	int size() {
-		return list.size();
+		return items.size();
 	}
 
 	string getTask(int index) {
-		return list[index].first;
+		return items[index].first;
 	}
 
 	string getDeadline(int index) {
-		return list[index].first;
+		return items[index].first;
+	}
+
+	void printAll() {
+		cout << endl << "Items are:" << endl;
+		for (auto i : items) {
+			cout << i.first << " with deadline: "<< i.second << endl;
+		}
 	}
 };
 
 class TodoModel {
-	TodoList* list;
+	TodoList* item;
 public:
-	void addNewItem(string s, string t) {
-		pair<string, string>* p;
-		p->first = s;
-		p->second = t;
-		list->AddtoList(p);
+	TodoModel() : item(new TodoList()) {}
+
+	~TodoModel() {
+		delete item;
 	}
-}
-#endif TODOMODEL_h
+	void addNewItem(string s, string t) {
+		pair<string, string> p;
+		p.first = s;
+		p.second = t;
+		item->AddtoList(&p);
+	}
 
-
+	void printItems() {
+		item->printAll();
+	}
+};
+#endif// TODOMODEL_h

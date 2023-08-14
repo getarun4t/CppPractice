@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include "TodoModel.h"
 
 using namespace std;
 
@@ -17,4 +18,4 @@ public:
 		cout << "***************************" << endl << endl;
 	}
 };
-#endif TODOVIEW_h
+#endif// TODOVIEW_h
