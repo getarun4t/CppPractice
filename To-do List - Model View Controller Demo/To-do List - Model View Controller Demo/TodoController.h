@@ -17,7 +17,6 @@ public:
 		while (1) {
 			string decision = check_decision();
 
-
 			if (decision == "Yes") {
 				addItem();
 			}
@@ -60,7 +59,6 @@ public:
 		return check;
 	}
 
-
 	string printItems() {
 		string check;
 		cout << endl << "Do you print items" << endl;
@@ -70,4 +68,3 @@ public:
 	}
 };
 #endif// TODOCONTROLLER_h
-
