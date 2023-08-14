@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -34,13 +35,10 @@ public:
 };
 
 class TodoModel {
-	TodoList* item;
+	unique_ptr<TodoList> item;
 public:
-	TodoModel() : item(new TodoList()) {}
+	TodoModel() : item(make_unique<TodoList>()) {}
 
-	~TodoModel() {
-		delete item;
-	}
 	void addNewItem(string s, string t) {
 		pair<string, string> p;
 		p.first = s;
