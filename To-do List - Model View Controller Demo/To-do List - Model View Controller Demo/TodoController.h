@@ -17,10 +17,13 @@ public:
 		while (1) {
 			string decision = check_decision();
 
-			if (decision == "yes") {
+
+			if (decision == "Yes") {
 				addItem();
 			}
 			else if (decision == "No") {
+				if (printItems() == "Yes")
+					model.printItems();
 				if (askToExit() == "Yes")
 					break;
 			}
@@ -34,14 +37,15 @@ public:
 
 	string check_decision() {
 		string decision;
-		cout << "Do you want to add a to-do list? " << endl;
+		cout << endl << "Do you want to add a to-do list? " << endl;
 		cout << "Please reply Yes/No" << endl;
 		cin >> decision;
+		return decision;
 	}
 
 	void addItem() {
 		string item, deadline;
-		cout << "Enter the to-do item: " << endl;
+		cout << endl<< "Enter the to-do item: " << endl;
 		cin >> item;
 		cout << "Enter the deadline of the item: " << endl;
 		cin >> deadline;
@@ -50,13 +54,20 @@ public:
 
 	string askToExit() {
 		string check;
-		cout << "Do you want to exit" << endl;
+		cout << endl << "Do you want to exit" << endl;
 		cout << "Please reply Yes/No" << endl;
 		cin >> check;
 		return check;
 	}
-}
 
-#endif TODOCONTROLLER_h
 
+	string printItems() {
+		string check;
+		cout << endl << "Do you print items" << endl;
+		cout << "Please reply Yes/No" << endl;
+		cin >> check;
+		return check;
+	}
+};
+#endif// TODOCONTROLLER_h
 
