@@ -12,14 +12,11 @@ using namespace std;
 
 int solution(string& S) {
     int iter = 0;
-    uint64_t s = binaryStringToNumber(S);
-    while(s != 0){
-        if (s & 1){
-            s = s -1;
-        }
-        else {
-            s = s/2;
-        }
+    while (S != "0") {
+        if (S.back() == '1')
+            S[S.length() - 1] = '0';
+        else 
+            S = S.substr(0, S.length() - 1);
         iter += 1;
     }
     return iter;
