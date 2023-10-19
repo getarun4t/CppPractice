@@ -27,15 +27,51 @@ protected:
 	double total_weight;
 	vector<double> absorbed_weights;
 	double score;
-	virtual double calculate_score(double score);
+	virtual double calculate_score(vector<double> absorbed_weights);
 };
 
 class BlueBox:protected Box {
-	double calculate_score(double score);
+	double calculate_score(vector<double> absorbed_weights);
+	double cantorPairing(double a, double b);
+
+	double calculate_score(vector<double> absorbed_weights) override {
+		double smallest = absorbed_weights[0];
+		double largest = absorbed_weights[0];
+		for (double num : absorbed_weights) {
+			if (num < smallest) {
+				smallest = num;
+			}
+			if (num > largest) {
+				largest = num;
+			}
+		}
+
+		return cantorPairing(smallest, largest);
+	}
+
+	double cantorPairing(double a, double b) {
+		return ((a + b) * (a + b + 1) / 2) + b;
+	}
 
 
 };
 
 class GreenBox :protected Box {
-	double calculate_score(double score);
+	double calculate_score(vector<double> absorbed_weights);
+
+	double calculate_score(vector<double> absorbed_weights) override {
+		int start = -3;
+		int divisor = 3;
+		int vector_length = absorbed_weights.size();
+		if (vector_length < 3) {
+			start = 0;
+			divisor = vector_length;
+		}
+		for (int i = vector_length - start; i <= vector_length; i++) {
+			score = score += absorbed_weights[i];
+		}
+
+		score = score / divisor;
+		return score * score;
+	}
 };
