@@ -21,29 +21,32 @@
 #include<vector>
 
 using namespace std;
+
 class Box {
 protected:
 	double weight;
 	double total_weight;
 	vector<double> absorbed_weights;
 	double score;
-	virtual double calculate_score(vector<double> absorbed_weights);
+	virtual double calculate_score(double absorbed_weight);
+public:
+	Box(double weight) : weight(weight) {};
 };
 
 class BlueBox:protected Box {
-	double calculate_score(vector<double> absorbed_weights);
+	double calculate_score(double absorbed_weights);
 	double cantorPairing(double a, double b);
+	double smallest;
+	double largest;
+public:
+	BlueBox(double weight) : Box(weight), smallest(weight), largest(smallest) {};
 
-	double calculate_score(vector<double> absorbed_weights) override {
-		double smallest = absorbed_weights[0];
-		double largest = absorbed_weights[0];
-		for (double num : absorbed_weights) {
-			if (num < smallest) {
-				smallest = num;
-			}
-			if (num > largest) {
-				largest = num;
-			}
+	double calculate_score(double absorbed_weight) override {
+		if (absorbed_weight < smallest) {
+			smallest = absorbed_weight;
+		}
+		if (absorbed_weight > largest) {
+			largest = absorbed_weight;
 		}
 
 		return cantorPairing(smallest, largest);
@@ -52,14 +55,14 @@ class BlueBox:protected Box {
 	double cantorPairing(double a, double b) {
 		return ((a + b) * (a + b + 1) / 2) + b;
 	}
-
-
 };
 
 class GreenBox :protected Box {
-	double calculate_score(vector<double> absorbed_weights);
+	double calculate_score(double absorbed_weight);
+public:
+	GreenBox(double weight) : Box(weight) {};
 
-	double calculate_score(vector<double> absorbed_weights) override {
+	double calculate_score(double absorbed_weights) override {
 		int start = -3;
 		int divisor = 3;
 		int vector_length = absorbed_weights.size();
@@ -70,8 +73,25 @@ class GreenBox :protected Box {
 		for (int i = vector_length - start; i <= vector_length; i++) {
 			score = score += absorbed_weights[i];
 		}
-
 		score = score / divisor;
 		return score * score;
 	}
 };
+
+class Player {
+	double score;
+
+};
+
+void play() {
+	GreenBox g1(0.0);
+	GreenBox g2(0.1);
+	BlueBox b1(0.2);
+	BlueBox b2(0.3);
+
+}
+
+
+void main() {
+	play();
+}
