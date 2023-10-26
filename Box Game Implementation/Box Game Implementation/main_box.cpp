@@ -34,12 +34,12 @@ public:
 };
 
 class BlueBox:protected Box {
-	double calculate_score(double absorbed_weights);
+	double calculate_score(double absorbed_weight);
 	double cantorPairing(double a, double b);
 	double smallest;
 	double largest;
 public:
-	BlueBox(double weight) : Box(weight), smallest(weight), largest(smallest) {};
+	BlueBox(double weight) : Box(weight), smallest(weight), largest(weight) {};
 
 	double calculate_score(double absorbed_weight) override {
 		if (absorbed_weight < smallest) {
@@ -62,9 +62,10 @@ class GreenBox :protected Box {
 public:
 	GreenBox(double weight) : Box(weight) {};
 
-	double calculate_score(double absorbed_weights) override {
+	double calculate_score(double absorbed_weight) override {
 		int start = -3;
 		int divisor = 3;
+		absorbed_weights.push_back(absorbed_weight);
 		int vector_length = absorbed_weights.size();
 		if (vector_length < 3) {
 			start = 0;
