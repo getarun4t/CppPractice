@@ -1,7 +1,7 @@
 /*
 * The goal is to implement the mechanics of a simple game and write test cases for them.
 * The rules of the game are :
-*-There are two types of boxes, green and blue.
+* -There are two types of boxes, green and blue.
 * -Both can absorb tokens of a given weight, which they add to their own total weight.
 * -Both are initialized with a given initial weight.
 * -After a box absorbs a token weight, it outputs a score.
@@ -19,6 +19,7 @@
 
 #include<iostream>
 #include<vector>
+#include<algorithm>
 
 using namespace std;
 
@@ -28,20 +29,30 @@ protected:
 	double total_weight;
 	vector<double> absorbed_weights;
 	double score;
-	virtual double calculate_score(double absorbed_weight);
+	double smallest;
 public:
-	Box(double weight) : weight(weight) {};
+	virtual double calculateScore(double absorbed_weight);
+	Box(double weight) : weight(weight), smallest(weight) {};
+	double getScore();
+	double getSmallest();
+
+	double getScore() {
+		return this->score;
+	}
+
+	double getSmallest() {
+		return this->smallest;
+	}
 };
 
 class BlueBox:protected Box {
-	double calculate_score(double absorbed_weight);
 	double cantorPairing(double a, double b);
-	double smallest;
 	double largest;
 public:
-	BlueBox(double weight) : Box(weight), smallest(weight), largest(weight) {};
+	BlueBox(double weight) : Box(weight), largest(weight) {};
+	double calculateScore(double absorbed_weight);
 
-	double calculate_score(double absorbed_weight) override {
+	double calculateScore(double absorbed_weight) override {
 		if (absorbed_weight < smallest) {
 			smallest = absorbed_weight;
 		}
@@ -58,11 +69,11 @@ public:
 };
 
 class GreenBox :protected Box {
-	double calculate_score(double absorbed_weight);
 public:
+	double calculateScore(double absorbed_weight);
 	GreenBox(double weight) : Box(weight) {};
 
-	double calculate_score(double absorbed_weight) override {
+	double calculateScore(double absorbed_weight) override {
 		int start = -3;
 		int divisor = 3;
 		absorbed_weights.push_back(absorbed_weight);
@@ -75,24 +86,72 @@ public:
 			score = score += absorbed_weights[i];
 		}
 		score = score / divisor;
+
+		if (absorbed_weight < smallest) {
+			smallest = absorbed_weight;
+		}
+
 		return score * score;
 	}
 };
 
 class Player {
 	double score;
+public:
+	void setScore(double score){
+		this->score = score;
+	}
 
+	double getScore() {
+		return this->score;
+	}
 };
 
-void play() {
+void play(vector<double> weights) {
 	GreenBox g1(0.0);
 	GreenBox g2(0.1);
 	BlueBox b1(0.2);
 	BlueBox b2(0.3);
 
+	Player A;
+	Player B;
+
+	for (auto player : { A, B }) {
+		if (!weights.empty()) {
+			player.setScore(GetLightestBoxScore(&g1, &g2, &b1, &b2, weights.front()));
+			weights.erase(weights.begin());
+		}
+		else {
+			break;
+		}
+	}
+
+	findWinner(&A, &B);
 }
 
+void findWinner(Player* A, Player* B) {
+	if (A->getScore() > B->getScore()) {
+		cout << "Player A wins" << endl;
+	}
+	else {
+		cout << "Player B wins" << endl;
+	}
+}
+
+double GetLightestBoxScore(GreenBox* a, GreenBox* b, BlueBox* c, BlueBox* d, double weight) {
+	double lowest_weight = numeric_limits<double>::max();
+	Box* box_with_lowest_weight = nullptr;
+	for (Box* box : { a,b,c,d }) {
+		if (lowest_weight > box->getSmallest()) {
+			lowest_weight = box->getSmallest();
+			box_with_lowest_weight = box;
+		}
+	}
+	box_with_lowest_weight->calculateScore(weight);
+	return box_with_lowest_weight->getScore();
+}
 
 void main() {
+	vector<double> weights = { 1,2,3,4 };
 	play();
 }
