@@ -31,10 +31,9 @@ protected:
 	double score;
 	double smallest;
 public:
-	virtual double calculateScore(double absorbed_weight);
-	Box(double weight) : weight(weight), smallest(weight) {};
-	double getScore();
-	double getSmallest();
+	Box(double weight) : weight(weight), smallest(weight), score(0.0), total_weight(0.0) {};
+
+	virtual double calculateScore(double absorbed_weight) { return 0.0; }
 
 	double getScore() {
 		return this->score;
@@ -45,12 +44,10 @@ public:
 	}
 };
 
-class BlueBox:protected Box {
-	double cantorPairing(double a, double b);
+class BlueBox:public Box {
 	double largest;
 public:
 	BlueBox(double weight) : Box(weight), largest(weight) {};
-	double calculateScore(double absorbed_weight);
 
 	double calculateScore(double absorbed_weight) override {
 		if (absorbed_weight < smallest) {
@@ -68,9 +65,8 @@ public:
 	}
 };
 
-class GreenBox :protected Box {
+class GreenBox :public Box {
 public:
-	double calculateScore(double absorbed_weight);
 	GreenBox(double weight) : Box(weight) {};
 
 	double calculateScore(double absorbed_weight) override {
@@ -98,6 +94,8 @@ public:
 class Player {
 	double score;
 public:
+	Player() : score(0.0) {};
+
 	void setScore(double score){
 		this->score = score;
 	}
@@ -108,17 +106,26 @@ public:
 };
 
 void play(vector<double> weights) {
+	void findWinner(Player*, Player*);
+	double GetLightestBoxScore(Box*, Box*, Box*, Box*, double);
+
 	GreenBox g1(0.0);
 	GreenBox g2(0.1);
-	BlueBox b1(0.2);
-	BlueBox b2(0.3);
+	BlueBox l1(0.2);
+	BlueBox l2(0.3);
+
+	Box* b1 = dynamic_cast<Box*>(&g1);
+	Box* b2 = dynamic_cast<Box*>(&g2);
+	Box* b3 = dynamic_cast<Box*>(&l1);
+	Box* b4 = dynamic_cast<Box*>(&l2);
+
 
 	Player A;
 	Player B;
 
 	for (auto player : { A, B }) {
 		if (!weights.empty()) {
-			player.setScore(GetLightestBoxScore(&g1, &g2, &b1, &b2, weights.front()));
+			player.setScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
 			weights.erase(weights.begin());
 		}
 		else {
@@ -138,7 +145,7 @@ void findWinner(Player* A, Player* B) {
 	}
 }
 
-double GetLightestBoxScore(GreenBox* a, GreenBox* b, BlueBox* c, BlueBox* d, double weight) {
+double GetLightestBoxScore(Box* a, Box* b, Box* c, Box* d, double weight) {
 	double lowest_weight = numeric_limits<double>::max();
 	Box* box_with_lowest_weight = nullptr;
 	for (Box* box : { a,b,c,d }) {
@@ -151,7 +158,7 @@ double GetLightestBoxScore(GreenBox* a, GreenBox* b, BlueBox* c, BlueBox* d, dou
 	return box_with_lowest_weight->getScore();
 }
 
-void main() {
+int main() {
 	vector<double> weights = { 1,2,3,4 };
-	play();
+	play(weights);
 }
