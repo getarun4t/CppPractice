@@ -78,12 +78,12 @@ public:
 			start = 0;
 			divisor = vector_length;
 		}
-		for (int i = vector_length - start; i <= vector_length; i++) {
+		for (int i = vector_length - start-1; i < vector_length; i++) {
 			score = score += absorbed_weights[i];
 		}
 		score = score / divisor;
 
-		if (absorbed_weight < smallest) {
+		if (absorbed_weight < smallest or smallest == 0.0) {
 			smallest = absorbed_weight;
 		}
 
@@ -96,8 +96,8 @@ class Player {
 public:
 	Player() : score(0.0) {};
 
-	void setScore(double score){
-		this->score = score;
+	void addScore(double box_score){
+		this->score+=box_score;
 	}
 
 	double getScore() {
@@ -119,20 +119,29 @@ void play(vector<double> weights) {
 	Box* b3 = dynamic_cast<Box*>(&l1);
 	Box* b4 = dynamic_cast<Box*>(&l2);
 
-
 	Player A;
 	Player B;
 
-	for (auto player : { A, B }) {
+	while (!weights.empty()) {
+		A.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
+		weights.erase(weights.begin());
+
+		cout << "Current score below: " << endl;
+		cout << "Player A: " << A.getScore() << endl;
+		cout << "Player B: " << B.getScore() << endl << endl;
+
 		if (!weights.empty()) {
-			player.setScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
+			B.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
 			weights.erase(weights.begin());
+
+			cout << "Current score below: " << endl;
+			cout << "Player A: " << A.getScore() << endl;
+			cout << "Player B: " << B.getScore() << endl << endl;
 		}
 		else {
 			break;
 		}
 	}
-
 	findWinner(&A, &B);
 }
 
@@ -159,6 +168,6 @@ double GetLightestBoxScore(Box* a, Box* b, Box* c, Box* d, double weight) {
 }
 
 int main() {
-	vector<double> weights = { 1,2,3,4 };
+	vector<double> weights = { 2,3,1.5, 8 };
 	play(weights);
 }
