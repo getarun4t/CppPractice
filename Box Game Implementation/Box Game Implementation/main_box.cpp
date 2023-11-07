@@ -105,6 +105,12 @@ public:
 	}
 };
 
+void printScore(Player* A, Player* B, string state="Current") {
+	cout << state << " score below: " << endl;
+	cout << "Player A: " << A->getScore() << endl;
+	cout << "Player B: " << B->getScore() << endl << endl;
+}
+
 void play(vector<double> weights) {
 	void findWinner(Player*, Player*);
 	double GetLightestBoxScore(Box*, Box*, Box*, Box*, double);
@@ -123,23 +129,15 @@ void play(vector<double> weights) {
 	Player B;
 
 	while (!weights.empty()) {
-		A.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
-		weights.erase(weights.begin());
-
-		cout << "Current score below: " << endl;
-		cout << "Player A: " << A.getScore() << endl;
-		cout << "Player B: " << B.getScore() << endl << endl;
-
-		if (!weights.empty()) {
-			B.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
+		for (int i = 0; i < 2 && !weights.empty(); i++) {
+			if (i == 0) {
+				A.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
+			}
+			else {
+				B.addScore(GetLightestBoxScore(b1, b2, b3, b4, weights.front()));
+			}
 			weights.erase(weights.begin());
-
-			cout << "Current score below: " << endl;
-			cout << "Player A: " << A.getScore() << endl;
-			cout << "Player B: " << B.getScore() << endl << endl;
-		}
-		else {
-			break;
+			printScore(&A, &B);
 		}
 	}
 	findWinner(&A, &B);
@@ -152,6 +150,7 @@ void findWinner(Player* A, Player* B) {
 	else {
 		cout << "Player B wins" << endl;
 	}
+	printScore(A, B, "Final");
 }
 
 double GetLightestBoxScore(Box* a, Box* b, Box* c, Box* d, double weight) {
@@ -168,6 +167,6 @@ double GetLightestBoxScore(Box* a, Box* b, Box* c, Box* d, double weight) {
 }
 
 int main() {
-	vector<double> weights = { 2,3,1.5, 8 };
+	vector<double> weights = { 2,3,1.5 };
 	play(weights);
 }
