@@ -17,6 +17,10 @@ void hellow(std::string str) {
 	std::cout << str << std::endl;
 }
 
+void hellom(std::string&& str) {
+	std::cout << str << std::endl;
+}
+
 int main() {
 	// Normal thread
 	std::thread t(hello);
@@ -33,8 +37,13 @@ int main() {
 	//Thread argument
 	std::thread w(hellow, "Hello Argumented Thread !");
 
+	//Moved thread argument
+	std::string str = "Hello Moved Thread !";
+	std::thread x(hellom, std::move(str));
+
 	t.join();
 	u.join();
 	v.join();
 	w.join();
+	x.join();
 }
