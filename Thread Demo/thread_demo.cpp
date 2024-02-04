@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <string>
 
 class Hello {
 public:
@@ -10,6 +11,10 @@ public:
 
 void hello() {
 	std::cout << "Hello World!" << std::endl;
+}
+
+void hellow(std::string str) {
+	std::cout << str << std::endl;
 }
 
 int main() {
@@ -25,7 +30,11 @@ int main() {
 		std::cout << "Hello Lambda !" << std::endl;
 		});
 
+	//Thread argument
+	std::thread w(hellow, "Hello Argumented Thread !");
+
 	t.join();
 	u.join();
 	v.join();
+	w.join();
 }
