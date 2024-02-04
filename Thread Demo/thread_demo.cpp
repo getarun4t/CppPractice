@@ -13,9 +13,19 @@ void hello() {
 }
 
 int main() {
+	// Normal thread
 	std::thread t(hello);
+
+	//Functor Thread
 	Hello hello;
 	std::thread u(hello);
+
+	//Lambda Thread
+	std::thread v([]() {
+		std::cout << "Hello Lambda !" << std::endl;
+		});
+
 	t.join();
 	u.join();
+	v.join();
 }
