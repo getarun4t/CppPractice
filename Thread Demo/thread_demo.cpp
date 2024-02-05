@@ -60,6 +60,13 @@ int main() {
 	MemFunDemo obj;
 	std::thread z(&MemFunDemo::hello, &obj);
 
+	//Lambda Express argument
+	std::string lamex = "Hello Lamex Thread !";
+	std::thread s([&lamex]() {
+		lamex = "Hello Lamex Modified Thread !";
+		});
+
+	s.join();
 	t.join();
 	u.join();
 	v.join();
@@ -69,4 +76,5 @@ int main() {
 	z.join();
 
 	std::cout << reftr << std::endl;
+	std::cout << lamex << std::endl;
 }
