@@ -9,6 +9,13 @@ public:
 	}
 };
 
+class MemFunDemo {
+public:
+	void hello() {
+		std::cout << "Hello Member Func Thread !" << std::endl;
+	}
+};
+
 void hello() {
 	std::cout << "Hello World!" << std::endl;
 }
@@ -49,12 +56,17 @@ int main() {
 	std::string reftr = "Hello Ref Thread !";
 	std::thread y(hellon, std::ref(reftr));
 
+	//Member Function argument
+	MemFunDemo obj;
+	std::thread z(&MemFunDemo::hello, &obj);
+
 	t.join();
 	u.join();
 	v.join();
 	w.join();
 	x.join();
 	y.join();
+	z.join();
 
 	std::cout << reftr << std::endl;
 }
