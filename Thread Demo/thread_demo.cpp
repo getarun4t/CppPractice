@@ -21,6 +21,10 @@ void hellom(std::string&& str) {
 	std::cout << str << std::endl;
 }
 
+void hellon(std::string& reftr) {
+	reftr = "Hello Ref Modified Thread !";
+}
+
 int main() {
 	// Normal thread
 	std::thread t(hello);
@@ -41,9 +45,16 @@ int main() {
 	std::string str = "Hello Moved Thread !";
 	std::thread x(hellom, std::move(str));
 
+	//Ref thread argument
+	std::string reftr = "Hello Ref Thread !";
+	std::thread y(hellon, std::ref(reftr));
+
 	t.join();
 	u.join();
 	v.join();
 	w.join();
 	x.join();
+	y.join();
+
+	std::cout << reftr << std::endl;
 }
