@@ -48,24 +48,30 @@ int main() {
 	//Thread argument
 	std::thread w(hellow, "Hello Argumented Thread !");
 
-	//Moved thread argument
+	//Moved thread
 	std::string str = "Hello Moved Thread !";
 	std::thread x(hellom, std::move(str));
 
-	//Ref thread argument
+	//Ref thread
 	std::string reftr = "Hello Ref Thread !";
 	std::thread y(hellon, std::ref(reftr));
 
-	//Member Function argument
+	//Member Function Thread
 	MemFunDemo obj;
 	std::thread z(&MemFunDemo::hello, &obj);
 
-	//Lambda Express argument
+	//Lambda Expression Thread
 	std::string lamex = "Hello Lamex Thread !";
 	std::thread s([&lamex]() {
 		lamex = "Hello Lamex Modified Thread !";
 		});
 
+	//Lambda Expression with Argument Thread
+	std::thread r([](std::string a, std::string b) {
+		std::cout << a << b << std::endl;
+		}, "Hello Lambda Expression ", "with Argument Thread !");
+	
+	r.join();
 	s.join();
 	t.join();
 	u.join();
