@@ -16,6 +16,21 @@ public:
 	}
 };
 
+class threadguard {
+	std::thread a;
+public:
+	explicit threadguard(std::thread&& a): a(std::move(a)){}
+
+	~threadguard() {
+		if (a.joinable()) {
+			a.join();
+		}
+	}
+
+	threadguard(const threadguard&)  = delete;
+	threadguard& operator =(const threadguard&) = delete;
+};
+
 void hello() {
 	std::cout << "Hello World!" << std::endl;
 }
@@ -70,6 +85,16 @@ int main() {
 	std::thread r([](std::string a, std::string b) {
 		std::cout << a << b << std::endl;
 		}, "Hello Lambda Expression ", "with Argument Thread !");
+
+	//try-catch Thread
+	try {
+		std::thread q(hello);
+		threadguard(std::move(q));
+		throw std::exception();
+	}
+	catch (std::exception& e) {
+		std::cout << "Exception caught: " << e.what() << "\n";
+	}
 	
 	r.join();
 	s.join();
