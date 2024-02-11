@@ -3,17 +3,36 @@
 #include<mutex>
 #include<string>
 #include<chrono>
+#include <shared_mutex>
+#include <vector>
 
 using namespace std::literals;
 
 std::mutex mut;
+std::mutex strmut;
+std::shared_mutex shm;
+
+int shared_value = 2;
+
+void write_task() {
+	std::lock_guard<std::shared_mutex> lock(shm);
+	++shared_value;
+	std::cout << "Writing to shared value now" << std::endl;
+}
+
+void read_task() {
+	std::shared_lock <std::shared_mutex> sharedlocks(shm);
+	using namespace std::literals;
+	std::this_thread::sleep_for(1000ms);
+	std::cout << "Current shared value : " << shared_value << std::endl;
+}
 
 void task(std::string str) {
-	mut.lock();
+	strmut.lock();
 	for(int i=0; i<5; i++){
 		std::cout << str[0] << str[1] << str[2] << std::endl;
 	}
-	mut.unlock();
+	strmut.unlock();
 }
 
 void task1() {
@@ -43,9 +62,22 @@ int main() {
 	std::thread b(task, "def");
 	std::thread c(task, "ghi");
 
+	std::vector<std::thread> thread;
+
+	for (int i = 0; i < 20; ++i) {
+		thread.push_back(std::thread(read_task));
+	}
+	thread.push_back(std::thread(write_task));
+	for (int i = 0; i < 20; ++i) {
+		thread.push_back(std::thread(read_task));
+	}
+	thread.push_back(std::thread(write_task));
+
 	task1();
 	task2();
 	a.join();
 	b.join();
 	c.join();
+	for (auto& thr : thread)
+		thr.join();
 }
