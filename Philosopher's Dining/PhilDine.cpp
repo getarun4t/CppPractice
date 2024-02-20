@@ -2,9 +2,11 @@
 #include <thread>
 #include <vector>
 #include <shared_mutex>
+#include <future>
+#include <chrono>
 
-std::thread t1;
-std::thread t2;
+std::promise<bool> prom;
+std::future<bool> fut= prom.get_future();
 
 class Philosopher {
 	bool eat;
@@ -51,9 +53,25 @@ struct Table {
 	}
 
 	void serve_food() {
+		std::vector<std::promise<void>> promises(fork.size());
+		std::vector<std::future<void>>	futures;
+
+		for (auto i = 0; i < fork.size(); ++i) {
+			futures.push_back(promises[i].get_future());
+		}
+
 		for (size_t i = 0; i < fork.size(); ++i) {
-			std::unique_lock<std::shared_mutex> lock(fork[i]);
-			std::cout << "Serving food to Philosopher " << i << std::endl;
+			using namespace std::chrono_literals;
+			std::thread([&](size_t index) {
+				std::unique_lock<std::shared_mutex> lock(fork[index]);
+				std::cout << "Serving food to Philosopher " << index << std::endl;
+				std::this_thread::sleep_for(2000ms);
+				promises[index].set_value();
+				}, i).detach();
+		}
+
+		for (auto& future : futures) {
+			future.wait();
 		}
 	}
 };
