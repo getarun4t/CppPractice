@@ -1,4 +1,4 @@
-﻿/*
+/*
 There are N blocks, numbered from 0 to N-1, arranged in a row.
 A couple of frogs were sitting together on one block when they had a terrible quarrel.
 Now they want to jump away from one another so that the distance between them will be as large as possible.
@@ -15,5 +15,6 @@ returns the longest possible distance that two frogs can make between each other
 */
 
 #include <vector>
+#include <iostream>
 
 int solution(std::vector<int>& blocks);
