@@ -15,5 +15,6 @@ returns the longest possible distance that two frogs can make between each other
 */
 
 #include <vector>
+#include <iostream>
 
 int solution(std::vector<int>& blocks);
