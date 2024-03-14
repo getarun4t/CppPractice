@@ -9,8 +9,10 @@ bool find_if_equal(std::vector<int>& blocks, int i) {
 }
 
 bool find_if_increasing(std::vector<int>& blocks, int i) {
-	if (blocks[i] < blocks[i+1])
-		return true;
+	if (i + 1 < blocks.size()) {
+		if (blocks[i] < blocks[i + 1])
+			return true;
+	}
 	return false;
 }
 
@@ -40,6 +42,10 @@ int solution(std::vector<int>& blocks) {
 			++temp_size;
 			++j;
 		}
+		while (find_if_increasing(blocks, j)) {
+			++temp_size;
+			++j;
+		}
 		if (max_size < temp_size)
 			max_size = temp_size;
 		++i;
@@ -48,6 +54,6 @@ int solution(std::vector<int>& blocks) {
 }
 
 int main() {
-	std::vector<int> blocks{1,2,3,4,5 };
+	std::vector<int> blocks{9,8,5,4,8,7,2,1,3,5 };
 	std::cout << "Distance b/w blocks: " << solution(blocks) << std::endl;
 }
