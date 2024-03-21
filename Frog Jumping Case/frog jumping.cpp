@@ -1,56 +1,29 @@
 #include "frog jumping.h"
 
-bool find_if_equal(std::vector<int>& blocks, int i) {
-	if (i+1 < blocks.size()) {
-		if (blocks[i] == blocks[i+1])
-			return true;
-	}
-	return false;
-}
-
-bool find_if_increasing(std::vector<int>& blocks, int i) {
-	if (i + 1 < blocks.size()) {
-		if (blocks[i] < blocks[i + 1])
-			return true;
-	}
-	return false;
-}
-
-bool find_if_equal_or_decreasing(std::vector<int>& blocks, int i) {
-	if (i+1 < blocks.size()) {
-		if (blocks[i] >= blocks[i+1])
-			return true;
-	}
-	return false;
-}
-
 int solution(std::vector<int>& blocks) {
-	if (blocks.size() < 2) {
+	int n = blocks.size();
+	if (n < 2) {
 		std::cout << "Invalid input !" << std::endl;
 	}
 
-	int i = 0;
-	int max_size = 0;
-	while (i < blocks.size()) {
-		int j = i;
-		int temp_size = 1;
-		while (find_if_equal_or_decreasing(blocks, j)) {
-			++temp_size;
-			++j;
-		}
-		while (find_if_equal(blocks, j)) {
-			++temp_size;
-			++j;
-		}
-		while (find_if_increasing(blocks, j)) {
-			++temp_size;
-			++j;
-		}
-		if (max_size < temp_size)
-			max_size = temp_size;
-		++i;
+	std::vector<int> dp_left( n, 0 );
+	std::vector<int> dp_right( n, 0 );
+
+	int max_distance = 0;
+	for (int i = 1; i < n; ++i) {
+		if (blocks[i] <= blocks[i - 1])
+			dp_left[i] = dp_left[i-1] + 1;
 	}
-	return max_size;
+
+	for (int i = n - 1; i > 0; --i) {
+		if (blocks[i] >= blocks[i - 1])
+			dp_right[i - 1] = dp_right[i] + 1;
+	}
+
+	for (int i = 0; i< n; ++i){
+		max_distance = std::max(max_distance, dp_left[i] + dp_right[i] + 1);
+	}
+	return max_distance;
 }
 
 int main() {
